@@ -1,0 +1,61 @@
+extends ../_base.pug
+
+block content
+
+	section
+		.column.is-full
+
+	section.section.hero.is-fullheight
+		.hero-head
+			.container
+				.column#padding.box.is-radiusless
+					.breadcrumb.is-centered
+						ul
+							li
+								span.icon.is-small.has-text-primary
+									i.fas.fa-user-lock
+								a(href=`/admin`) Панель управления
+							li.is-active
+								a(href=`/main`) Галерея
+				nav.panel.is-fullwidth
+					p.panel-heading Публикация
+						a.button.is-dark.is-pulled-right.is-small(href='/gallery') Открыть галерею
+						.box.is-radiusless
+							.is-scrollable.is-hidden-mobile.is-hidden-tablet-only
+								table.table.is-bordered.pricing__table.is-fullwidth.is-hoverable
+									tbody
+										each gallery, id in rows
+											if gallery.status == false
+												tr.is-size-5
+													td
+														.field
+															form(action="/gallery/setstatus" method="post")
+																.field
+																	.select
+																		select(name="status" value="true")
+																			option(value="1") Одобрить
+																			option(value="0") Отклонить
+																	select(name="imageId" hidden)
+																		option(selected) #{gallery.id}
+																button.button.is-fullwidth.is-primary(type="submit") Подтвердить
+														.field
+															strong.is-size-5 #{gallery.title}
+															p.is-size-7 #{gallery.description}
+															span от 
+															a.is-inline(href=`/user/${gallery.user}` tager='_blank') #{gallery.user}
+														//- .field
+														//-     button.button.is-fullwidth.is-danger(type="submit") Отклонить
+													td.has-text-centered
+														figure.image
+															img(src=`${gallery.image}`)
+														//- td.has-text-centered
+														//- 	a(href=`https://steamid.xyz/${gallery.steamid}` target="_blank") #{gallery.steamid}
+														//- td.has-text-centered #{gallery.discord}
+
+	style.
+		.is-scrollable {
+			position: relative;
+			height: 80vh;
+			width: auto;
+			overflow: auto;
+		}

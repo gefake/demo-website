@@ -1,0 +1,79 @@
+extends ../_base.pug
+
+block content
+    html
+        body
+            section.hero.is-dark.is-mediumheight.background
+                .hero-body
+                    .container
+                //- .hero-foot
+                //-     nav.tabs
+                //-         .container.is-fluid
+                //-             ul
+                //-                 li
+                //-                     a(href="#description") Главная
+                //-                 li
+                //-                     a Администрация
+                //-                 //- span.icon
+                //-                 //-     i.fas.fa-play#play-pause-button
+            section.hero
+                .hero-head
+                    .container
+
+        style.
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            #play-pause-button {
+                cursor: pointer;
+                font-size: 15px;
+            }
+            
+            .background {
+                background-color: #fff;
+                background-image: url("https://i.imgur.com/huD1jug.jpg");
+                background-position: center top;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            @media screen and (max-width: 768px) {
+                .background {
+                    background-color: #fff;
+                    background-image: url("https://i.imgur.com/huD1jug.jpg");
+                    background-position: right;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                }
+            }
+
+        script.
+
+            $(function() {
+                $("body").animate({ opacity: "1.0" })
+            })
+
+            var audio = new Audio("https://media.vocaroo.com/mp3/7zv4oX7DZnl")
+            audio.volume = 0.05
+
+            $('#play-pause-button').on("click",function(){
+            if($(this).hasClass('fa-play'))
+            {
+                $(this).removeClass('fa-play')
+                $(this).addClass('fa-pause')
+                audio.play()
+            }
+            else
+            {
+                $(this).removeClass('fa-pause')
+                $(this).addClass('fa-play')
+                audio.pause()
+            }
+            })
+
+            audio.onended = function() {
+                $("#play-pause-button").removeClass('fa-pause')
+                $("#play-pause-button").addClass('fa-play')
+            };

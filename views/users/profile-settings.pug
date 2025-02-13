@@ -1,0 +1,122 @@
+extends ../_base.pug
+
+block content
+
+        section
+            .column.is-full
+ 
+        section.section.hero.is-fullheight
+            .hero-head
+                .container
+                    .column.box.is-radiusless
+                        .breadcrumb.is-centered
+                            ul
+                                li
+                                    span.icon.is-small.has-text-primary
+                                        i.fas.fa-user
+                                    a(href=`/user/${uID}`) #{uID}
+                                li.is-active
+                                    a Настройки
+                    .columns.is-centered.is-multiline
+                        .column.is-one-quarter
+                            .box.is-radiusless
+                                .field
+                                    figure.image.is-256x256.is-square.has-image-centered
+                                        img.is-rounded(src=`/static/uploads/avatars/${uID}.png`)
+                                form(action="/user/avatar" method="POST" enctype="multipart/form-data")
+                                    .field
+                                        .file.is-fullwidth.has-name.is-black#filecase
+                                            label.file-label
+                                                input.file-input#inp(type="file" name="avatar" accept="image/*" required)
+                                                span.file-cta
+                                                    span.file-icon
+                                                        i.fas.fa-upload
+                                                    span.file-label
+                                                        | Фотография профиля
+                                                span.file-name
+                                                    span#filename.has-text-primary
+                                        input(type="text" name="username" value=uID hidden)
+                                    .field
+                                        button.button.is-fullwidth.is-dark#load(disabled)
+                                            span.icon.is-small
+                                                i.fas.fa-file-image
+                                            span Загрузить
+                        .column.is-two-quarters
+                            .box.is-radiusless
+                                form(action="/user/header" method="POST")
+                                    each row in rows
+                                        if row.info!=NULL
+                                            .column.is-full.box.is-radiusless.hero-wrap
+                                                img(src=row.info.background)
+                                        else
+                                            .column.is-full.box.is-radiusless.hero-wrap
+                                                img(src='https://i.imgur.com/pYaW0Ao.png')
+                                    .field
+                                        input.input.is-radiusless(type="text" name="image" placeholder="Ссылка в формате Imgur URL" required)
+                                    .field
+                                        button.button.is-fullwidth.is-dark
+                                            span.icon.is-small
+                                                i.fas.fa-image
+                                            span Установить
+                                            
+        style.
+
+            .breadcrumb ul :first-child a {
+                padding: 0.5em 0.75em 0.5em 0em;
+            }
+
+            .hero-wrap {
+                position: relative;
+                z-index: 1;
+                background-size: cover;
+                background-position: center;
+                background-color: #FBA64B;
+                width: 100%;
+                min-height: 256px;
+            }
+
+            .box.hero-wrap:not(:last-child) {
+                margin-bottom: 0.7rem;
+            }
+
+            .hero-wrap img {
+                position: relative;
+                z-index: 1;
+                display: none;
+            }
+
+            .has-image-centered {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .file-name.is-primary {
+                border-color: #26A69A;
+            }
+
+            .file-name.is-primary:hover {
+                border-color: #1d7d74;
+            }
+
+        script.
+            $('#inp').bind('change', function () {
+            var filename = $("#inp").val()
+                if (/^\s*$/.test(filename)) {
+                    $("#filecase").removeClass('is-black')
+                }
+                else {
+                    $("#filecase").removeClass('is-black')
+                    $("#filecase").addClass('is-primary')
+                    $(".file-name").addClass('is-primary')
+                    $("#load").addClass('is-success').removeClass('is-dark').prop("disabled", false)
+                    $("#filename").text('Выбрано...')
+                }
+            })
+
+            $(window).bind("load", function() {
+                var getImageSrc = $('.hero-wrap img').attr('src')
+                $('.hero-wrap').css({
+                    'background-size' : 'cover',
+                    'background-image' : 'url(' + getImageSrc + ')'
+                })
+            })

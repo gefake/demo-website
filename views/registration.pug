@@ -1,0 +1,109 @@
+extends _base.pug
+
+block content
+    
+    section(class='section hero is-fullheight')
+        .hero-body
+            .container
+                .columns.is-centered.is-multiline
+                    .box.is-radiusless
+                        form(action='/user/reg' method='POST')
+                            p Имя пользователя
+                            .field
+                            .control
+                                input.input.is-radiusless#username(type='text' name='username' maxlength="24" required)
+                            .field
+                            .control
+                                p#pass Пароль
+                            .field
+                            .control
+                                input#password.input.is-radiusless(type='password' minlength="8" maxlength="32" name='password' required)
+                            .field
+                            .control
+                                p#pass Подтвердите пароль
+                            .field
+                            .control
+                                input#confirm_password.input.is-radiusless(type='password' minlength="8" maxlength="32" required)
+                            .field
+                            .control
+                                p Адрес электронной почты
+                            .field
+                            .control
+                                input.input.is-radiusless(type='email' name='mail' required)
+                            .field
+                            .control
+                                //- .navbar-divider
+                                input#confirm-checkbox.is-checkradio.is-success.is-circle(type="checkbox" required)
+                                label(for="confirm-checkbox") Соглашение с правилами сообщества
+                            .field
+                            .control
+                                div#captcha.g-recaptcha.box.is-radiusless(data-theme="dark" data-sitekey="6LeDmNAUAAAAAFuW4FVWCGVUcG-1gifJL9rGzz6q" data-callback="formSubmit")
+                            .field
+                            .control
+                                button.button.is-fullwidth.is-dark.is-medium.is-radiusless(type='submit')
+                                    span.icon.is-medium
+                                        i.fas.fa-sign-in-alt
+                                    span Регистрация
+                            .field
+                            .control
+                            p.has-text-centered.is-size-7 Уже зарегистрированы?
+                                a(href='/user/login').has-text-centered.is-size-7  Войти
+    script.
+        var password = document.getElementById("password")
+        , confirm_password = document.getElementById("confirm_password")
+
+        function validatePassword(){
+            if(password.value != confirm_password.value) {
+                confirm_password.setCustomValidity("Пароль не соответствует введённому")
+                $("#password").removeClass("has-text-primary").addClass("has-text-danger")
+                $("#confirm_password").removeClass("has-text-primary").addClass("has-text-danger")
+            } else if (password.value.length < 8) {
+                $("#password").removeClass("has-text-primary").addClass("has-text-danger")
+                $("#confirm_password").removeClass("has-text-primary").addClass("has-text-danger")
+            } else {
+                confirm_password.setCustomValidity('')
+                $("#password").addClass("has-text-primary").removeClass("has-text-danger")
+                $("#confirm_password").addClass("has-text-primary").removeClass("has-text-danger")
+            }
+        }
+
+        password.onchange = validatePassword
+        password.onkeyup = validatePassword
+        confirm_password.onkeyup = validatePassword
+        confirm_password.onchange = validatePassword
+
+        $('#inp').bind('change', function () {
+        var filename = $("#inp").val()
+            if (/^\s*$/.test(filename)) {
+                $("#filecase").removeClass('is-black')
+            }
+            else {
+                $("#filecase").removeClass('is-black')
+                $("#filecase").addClass('is-primary')
+                $(".file-name").addClass('is-primary')
+                $("#filename").text('Загружено')
+            }
+        })
+
+        $("#username").on("keypress", function(event) {
+            var regex = /^[0-9a-zA-Z-*_.]+$/g;
+            var key = String.fromCharCode(event.which);
+            if (event.keyCode == 8 || event.keyCode == 37 || event.keyCode == 39 || regex.test(key)) {
+                return true;
+            }
+            return false;
+        });
+
+        $('#username').on("paste",function(e)
+        {
+            e.preventDefault();
+        });
+
+    style.
+        .file-name.is-primary {
+            border-color: #26A69A;
+        }
+
+        .file-name.is-primary:hover {
+            border-color: #1d7d74;
+        }

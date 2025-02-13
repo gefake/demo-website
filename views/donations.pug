@@ -1,0 +1,272 @@
+extends _base.pug
+
+block content
+
+    section
+        .column.is-full
+
+    include modals/screenshot.pug
+    include modals/video.pug
+
+    section.dark.section.hero.is-fullheight
+        .hero-head
+            .container
+                .column.box.is-radiusless
+                    .breadcrumb.is-centered
+                        ul
+                            li.is-active
+                                span.icon.is-small.has-text-grey-light
+                                    i.fas.fa-user-lock
+                                a(href=`/main`) Панель управления
+                .column.box.is-radiusless
+                    h1.title.has-text-white.is-size-5.has-text-centered COBALT - Донаты за всё время
+                .box.has-background-success.is-radiusless.is-size-5.has-text-centered.has-text-success
+                    p.title.has-text-white.is-size-2 #{cobalt_total} ₽
+                .column.box.is-radiusless
+                    h1.title.has-text-white.is-size-5.has-text-centered EVAC - Донаты за всё время
+                .box.has-background-success.is-radiusless.is-size-5.has-text-centered.has-text-success
+                    p.title.has-text-white.is-size-2 #{evac_total} ₽
+                .column.box.is-radiusless
+                    h1.title.has-text-white.is-size-5.has-text-centered Последние донаты
+                .columns.is-multiline
+                    each row in cobalt_lastdons
+                        .column
+                            .column.box.is-dark.is-radiusless.is-size-5.has-text-centered
+                                p.has-text-white.is-size-2.has-text-success +#{row.amount} ₽
+                                p.has-text-white.is-size-4.has-text-grey-lighter #{row.niceTime}
+                                .field
+                                a.button.is-fullwidth.is-success.has-text-white.is-small(href=`https://steamid.xyz/${row.steamID}` target='_blank') #{row.steamID}
+                //- .column.box.is-radiusless
+                //-     h1.title.has-text-white.is-size-5.has-text-centered Топ-донатеры
+                //- .columns.is-multiline
+                    //- each row in rows_lastDonators
+                    //-     .column
+                    //-         .column.box.is-dark.is-radiusless.is-size-5.has-text-centered
+                    //-             p.has-text-white.is-size-2.has-text-success #{row.totalTopup} ₽
+                    //-             p.has-text-white.is-size-7.has-text-grey-lighter потрачено #{row.totalSpent} жетонов
+                    //-             p.has-text-white.is-size-7.has-text-grey-lighter всего #{row.totalPurchases} покупок
+                    //-             .field
+                    //-             a.button.is-fullwidth.is-success.has-text-white.is-small(href=`https://steamid.xyz/${row.steamID}` target='_blank') #{row.steamID}
+                .columns.is-multiline
+                    .column.is-full
+                        .box.dark-bg.is-radiusless.is-size-5.has-text-centered
+                            | Список донатов EVAC
+                            br
+                            canvas.is-hidden-desktop#mobileChart(height='1000', data-shop=evac_purchases)
+                            canvas.is-hidden-mobile#desktopChart(height='125', data-shop=evac_purchases)
+                .columns.is-multiline
+                    .column.is-full
+                        .box.dark-bg.is-radiusless.is-size-5.has-text-centered
+                            | Список донатов COBALT
+                            br
+                            canvas.is-hidden-desktop#mobileChart2(height='1000', data-shop=cobalt_purchases)
+                            canvas.is-hidden-mobile#desktopChart2(height='125', data-shop=cobalt_purchases)
+    style.
+        .primary-bg{ background-color: #26A69A; border-color:  #26A69A }
+        .success-bg{ background-color: #23d160; border-color: #23d160 }
+        .danger-bg{ background-color: #ff3860; border-color: #ff3860 }
+        .warning-bg{ background-color: #ffdd57; border-color: #ffdd57 }
+        .info-bg{ background-color: #3273dc; border-color: #3273dc }
+        .example-bg{ background-color: #404040; border-color: #404040 }
+        .void-bg{ background: linear-gradient(-45deg, #FFA64B, #F87D71); border-color: linear-gradient(-45deg, #FFA64B, #F87D71) }
+
+        .dropdown {
+            width: 100%;
+        }
+
+        .dropdown-trigger {
+            width: 100%
+        }
+
+        #drop {
+            display: block;
+            width: 100%;
+            justify-content: space-between
+        }
+
+    script.
+        var desktopChart = document.getElementById('desktopChart')
+        var mobileChart = document.getElementById('mobileChart')
+
+        var shopData = JSON.parse(desktopChart.dataset.shop)
+
+        var dataSubs = []
+        var dataSubsCount = []
+        var dataSubsSum = []
+
+        shopData.forEach(element => {
+            dataSubs.push(element.class)
+            dataSubsCount.push(element.count)
+            dataSubsSum.push(element.count * element.price)
+        })
+
+        const data = {
+            labels: dataSubs,
+            datasets: [
+                {
+                    label: 'Покупки',
+                    data: dataSubsCount,
+                    backgroundColor: [
+                        '#fba64b',
+                        '#f87d71',
+                    ],
+                    borderColor: [
+                        '#fba64b',
+                        '#f87d71',
+                    ],
+                },
+                {
+                    label: 'Доход',
+                    data: dataSubsSum,
+                    backgroundColor: [
+                        '#f87d71',
+                        '#fba64b',
+                    ],
+                    borderColor: [
+                        '#f87d71',
+                        '#fba64b',
+                    ],
+                }
+            ],
+        };
+
+        var isMobile = Math.min(window.screen.width, window.screen.height) < 768 || navigator.userAgent.indexOf("Mobi") > -1;
+
+        Chart.defaults.color = "#FFFFFF";
+
+        var desktopChart = new Chart(desktopChart, {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                },
+            }
+        })
+
+        var mobileChart = new Chart(mobileChart, {
+            type: 'bar',
+            data: data,
+            options: {
+                indexAxis: 'y',
+                elements: {
+                    bar: {
+                        borderWidth: 0,
+                    }
+                },
+                responsive: true,
+                    plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                },
+            },
+        })
+
+        //- cobalt part
+
+        var desktopChart2 = document.getElementById('desktopChart2')
+        var mobileChart2 = document.getElementById('mobileChart2')
+
+        var shopData = JSON.parse(desktopChart2.dataset.shop)
+
+        var dataSubs = []
+        var dataSubsCount = []
+        var dataSubsSum = []
+
+        shopData.forEach(element => {
+            dataSubs.push(element.class)
+            dataSubsCount.push(element.count)
+            dataSubsSum.push(element.count * element.price)
+        })
+
+        const data2 = {
+            labels: dataSubs,
+            datasets: [
+                {
+                    label: 'Покупки',
+                    data: dataSubsCount,
+                    backgroundColor: [
+                        '#fba64b',
+                        '#f87d71',
+                    ],
+                    borderColor: [
+                        '#fba64b',
+                        '#f87d71',
+                    ],
+                },
+                {
+                    label: 'Доход',
+                    data: dataSubsSum,
+                    backgroundColor: [
+                        '#f87d71',
+                        '#fba64b',
+                    ],
+                    borderColor: [
+                        '#f87d71',
+                        '#fba64b',
+                    ],
+                }
+            ],
+        };
+
+        var isMobile = Math.min(window.screen.width, window.screen.height) < 768 || navigator.userAgent.indexOf("Mobi") > -1;
+
+        Chart.defaults.color = "#FFFFFF";
+
+        var desktopChart2 = new Chart(desktopChart2, {
+            type: 'bar',
+            data: data2,
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                },
+            }
+        })
+
+        var mobileChart2 = new Chart(mobileChart2, {
+            type: 'bar',
+            data: data2,
+            options: {
+                indexAxis: 'y',
+                elements: {
+                    bar: {
+                        borderWidth: 0,
+                    }
+                },
+                responsive: true,
+                    plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                },
+            },
+        })

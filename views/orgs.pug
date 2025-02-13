@@ -1,0 +1,67 @@
+extends _base.pug
+
+block content
+
+		section
+			.column.is-full
+
+		section.section.hero.has-background-grey-darker.is-fullheight
+			.hero-head
+				.container
+					.column.box.is-radiusless
+						.breadcrumb.is-centered
+							ul
+								li
+									span.icon.is-small.has-text-primary
+										i.fas.fa-home
+									a(href=`/main`) Главная
+								li.is-active
+									a(href=`/main`) Фракции
+					.columns.is-variable.is-3.is-multiline
+						a(href='/police').column#police.box.is-radiusless.is-full.overlay
+							p.overlay-text.has-text-white.is-size-4.has-text-centered Полицейский Департамент Платтсбурга
+						a(href='/police').column#fire.box.is-radiusless.is-full.overlay
+							p.overlay-text.has-text-white.is-size-4.has-text-centered Пожарный Департамент Нью-Йорка
+						a(href='/police').column#med.box.is-radiusless.is-full.overlay
+							p.overlay-text.has-text-white.is-size-4.has-text-centered Southland Medical Center
+
+		style.
+			.overlay {
+				height: 200px;
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: cover;
+				opacity: 0.8;
+				transition: .5s ease;
+				filter: grayscale(100%);
+				-webkit-filter: grayscale(100%);
+				-webkit-box-shadow: inset 2px 25px 42px -8px #000000; 
+				box-shadow: inset 2px 25px 42px -8px #000000;
+			}
+
+			.overlay-text {
+				opacity: 0;
+				transition: .5s ease;
+			}
+
+			.overlay:hover  {
+				opacity: 1;
+				filter: grayscale(0%);
+				-webkit-filter: grayscale(0%);
+			}
+
+			.overlay:hover .overlay-text {
+				opacity: 1;
+			}
+
+			#police {
+				background-image: url('https://i.imgur.com/qcyIy27.jpg');
+			}
+
+			#fire {
+				background-image: url('https://i.imgur.com/GNjJCLZ.png');
+			}
+
+			#med {
+				background-image: url('https://i.imgur.com/TKg8FVd.jpg');
+			}

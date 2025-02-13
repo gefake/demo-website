@@ -1,0 +1,22 @@
+#video-publicate.modal
+	.modal-background(onclick="document.getElementById('video-publicate').classList.remove('is-active')")
+	.modal-card
+		header.modal-card-head
+			p#modal-text.modal-card-title Опубликовать фотографию
+			button.delete(onclick="document.getElementById('video-publicate').classList.remove('is-active')")
+
+		section.modal-card-body
+			form(action="/video" method="post")
+				.field
+					.control
+						input.input.is-radiusless(type="text" name="title" placeholder="Название видеоролика" required="")
+				.field
+					.control
+						input.input.is-radiusless(type="text" name="desc" placeholder="Краткое описание происходящего на видео" required="")
+				.field
+					.control
+						input.input.is-radiusless(type="text" name="video" placeholder="URL-ссылка на видео с YouTube" required="")
+				.field
+					.control
+						button.is-dark#padding-top.button.is-fullwidth(type="submit")
+							p.text-modal Отправить

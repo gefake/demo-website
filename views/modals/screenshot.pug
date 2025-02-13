@@ -1,0 +1,25 @@
+#screenshot-publicate.modal
+	.modal-background(onclick="document.getElementById('screenshot-publicate').classList.remove('is-active')")
+	.modal-card
+		header.modal-card-head
+			p#modal-text.modal-card-title Фотография
+			button.delete(onclick="document.getElementById('screenshot-publicate').classList.remove('is-active')")
+
+		section.modal-card-body
+			form#screenpost(action="/gallery" method="post")
+				.field
+					.control
+						input.input.is-radiusless#title(type="text" name="title" placeholder="Название фотографии" required="")
+				.field
+					.control
+						input.input.is-radiusless(type="text" name="desc" placeholder="Краткое описание происходящего на фотографии" required="")
+				.field
+					.control
+						input.input.is-radiusless(type="text" name="image" placeholder="URL-ссылка на фото (Imgur URL)" required="")
+				.field
+					.control
+						div.g-recaptcha.is-radiusless(data-theme="dark" data-sitekey="6LeDmNAUAAAAAFuW4FVWCGVUcG-1gifJL9rGzz6q" data-callback="formSubmit")
+				.field
+					.control
+						button.is-dark.button.is-fullwidth(type="submit")
+							p.text-modal Отправить

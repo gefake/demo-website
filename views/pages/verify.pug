@@ -1,0 +1,29 @@
+extends ../_base.pug
+
+block content
+    
+    section(class='section hero is-fullheight')
+        .hero-body
+            .container
+                .columns.is-centered.is-multiline
+                    .column.is-one-quarter
+                        .box.is-radiusless
+                            .field
+                                .control
+                                .field
+                                    p.has-text-centered Введите в поле код подтверждения, высланный на почту при регистрации
+                        .box.is-radiusless
+                            form(action='/user/verify' method='POST')
+                                .field
+                                    input.input.is-medium.is-radiusless(type='number' maxlength="6" placeholder='Шестизначный код' name='code' required)
+                                .field
+                                .control
+                                    button.button.is-fullwidth.is-medium.is-primary(type='submit')
+                                        span.icon.is-medium
+                                            i.fas.fa-key
+                                        span Подтвердить
+                        //- .box.is-radiusless
+                        //-     .field
+                        //-         p.has-text-centered.is-size-7 Не пришёл код?
+                        //-     .field
+                        //-         a.button.is-dark.is-fullwidth.is-small(href='https://vk.me/voidline' target='_blank') Написать нам

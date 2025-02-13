@@ -1,0 +1,7 @@
+node_modules/
+/static/uploads
+file/
+
+config.js
+
+*.png

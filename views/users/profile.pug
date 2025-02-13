@@ -1,0 +1,138 @@
+extends ../_base.pug
+
+block content
+
+    section
+        .column.is-full
+
+    section.section.hero.is-fullheight
+        .hero-head
+            .container
+                .column.box.is-radiusless
+                    .breadcrumb.is-centered
+                        ul
+                            li.is-active
+                                span.icon.is-small.has-text-grey-light
+                                    i.fas.fa-user
+                                a(href=`/user/${uID}`) #{uID}
+                each row in rows
+                    if row.info!=NULL
+                        .column.is-full.box.is-radiusless.hero-wrap
+                            img(src=row.info.background)
+                        .dropdown
+                    else
+                        .column.is-full.box.is-radiusless.hero-wrap
+                            img(src='https://i.imgur.com/pYaW0Ao.png')
+                        .dropdown
+                        form#f1(action=`/user/${uID}/delete`, method="post")
+                        form#f2(action=`/user/${uID}/ban`, method="post")
+                .columns.is-multiline
+                    each row in rows
+                        .column.is-full
+                            if row.avatar!="0"
+                                figure.image.is-square.is-188x188.has-image-centered
+                                    img.is-rounded(src=`/static/uploads/avatars/${uID}.png`)
+                            else
+                                figure.image.is-square.is-188x188.has-image-centered
+                                    img.is-rounded(src=`/static/uploads/avatars/user.png`)
+                            .field
+                                h1.title.has-text-centered.has-text-grey-lighter #{uID} 
+                                    if user
+                                        if user.name==uID
+                                            if row.code=='1'
+                                                a.icon.is-medium.is-size-4(href=`/user/${uID}/settings`)
+                                                    i.fas.fa-cog.fa-small
+                                            else
+                                                .icon.is-medium.is-size-4.has-text-danger.has-tooltip-danger.has-tooltip-multiline(data-tooltip='Аккаунт не подтвержден. Настройки недоступны')
+                                                    i.fas.fa-ban.fa-small
+
+                            .field
+                                h1.subtitle.has-text-centered.has-text-grey-light.text-block зарегистрирован #{nowStamp}
+                            .field.has-addons
+
+                            if user
+                                if user.rank=="root"
+                                    if row.rank!="root"
+                                        if row.rank!="admin"
+                                            .buttons.has-addons.is-centered
+                                                button.is-rounded.button.is-dark(type="submit" form="f1")
+                                                    .icon.is-small
+                                                        i.fas.fa-trash-alt
+                                                    span Удалить аккаунт
+                                                button.is-rounded.button.is-dark(type="submit" form="f2")
+                                                    .icon.is-small
+                                                        i.fas.fa-trash-alt
+                                                    span Забанить
+                            .field
+                                if row.rank=="root"
+                                    .tags.has-addons
+                                        span.tag.is-primary.is-medium Администратор
+                                if row.rank=="admin"
+                                    .tags.has-addons
+                                        span.tag.is-primary.is-medium Оператор
+                                if row.rank=="user"
+                                    .tags.has-addons
+                                        span.tag.is-dark.is-medium Пользователь
+
+        style.
+
+            .tags.has-addons {
+                display: flex;
+                justify-content: center;
+            }
+
+            .has-image-centered {
+                margin-left: auto;
+                margin-right: auto;
+                bottom: 9.3em;
+                z-index: 2;
+                border:3px solid white;
+                border-radius: 500px;
+            }
+
+            .hero-wrap {
+                position: relative;
+                z-index: 1;
+                background-size: cover;
+                background-position: center;
+                background-color: #FBA64B;
+                width: 100%;
+                min-height: 250px;
+            }
+
+            .hero-wrap img {
+                position: relative;
+                z-index: 1;
+                display: none;
+            }
+
+            .image.is-square {
+                padding-top: 0%
+            }
+
+            @media screen and (max-width: 768px) {
+                .hero-wrap {
+                    min-height: 150px;
+                }
+            }
+
+        script.
+
+            var dropdown = document.querySelector('.dropdown')
+                dropdown.addEventListener('click', function(event) {
+                event.stopPropagation()
+                dropdown.classList.toggle('is-active')
+            })
+
+            var body = document.querySelector('body')
+                body.addEventListener('click', function(event) {
+                dropdown.classList.remove('is-active')
+            })
+
+            $(window).bind("load", function() {
+                var getImageSrc = $('.hero-wrap img').attr('src')
+                $('.hero-wrap').css({
+                    'background-size' : 'cover',
+                    'background-image' : 'url(' + getImageSrc + ')'
+                })
+            })

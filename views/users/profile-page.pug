@@ -1,0 +1,33 @@
+extends ../_base.pug
+
+block content
+
+	section
+		.column.is-full
+
+	section.dark.section.hero.is-fullheight
+		.hero-head
+			.container
+				.column.box.is-radiusless
+					.breadcrumb.is-centered
+						ul
+							li.is-active
+								span.icon.is-small.has-text-grey-light
+									i.fas.fa-user-lock
+								a(href=`/main`) Список пользователей
+				.columns.is-multiline
+					each row in rows
+						.column.is-one-fifth.has-text-centered.has-text-white
+							.field
+								figure.image.is-96x96.container.is-square
+									a(href=`/user/${row.user}`)
+										if row.avatar=='0'
+											img.is-rounded(src='/static/uploads/avatars/user.png')
+										else
+											img.is-rounded(src=`/static/uploads/avatars/${row.user}.png`)
+							.field
+								a.has-text-white(href=`/user/${row.user}`) #{row.user}
+				if count > pID2
+					.field
+						.has-text-centered
+							a.button.is-dark(href=`/user/list/${pID2}-${pID2 * 2}`) Загрузить ещё

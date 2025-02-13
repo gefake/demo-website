@@ -1,0 +1,256 @@
+extends _base.pug
+
+block content
+
+    section
+        .column.is-full
+
+    include modals/screenshot.pug
+    include modals/video.pug
+
+    section.dark.section.hero.is-fullheight
+        .hero-head
+            .container
+                .column.box.is-radiusless
+                    .breadcrumb.is-centered
+                        ul
+                            li.is-active
+                                span.icon.is-small.has-text-grey-light
+                                    i.fas.fa-user-lock
+                                a(href=`/main`) Панель управления
+                .column.box.is-radiusless
+                    h1.title.has-text-white.is-size-5.has-text-centered EVAC - Общая сумма донатов за всё время
+                .box.has-background-success.is-radiusless.is-size-5.has-text-centered.has-text-success
+                    p.title.has-text-white.is-size-2 #{paymentSum} ₽
+                .column.box.is-radiusless
+                    h1.title.has-text-white.is-size-5.has-text-centered Последние донаты
+                .columns.is-multiline
+                    each row in rows_lastDons
+                        .column
+                            .column.box.is-dark.is-radiusless.is-size-5.has-text-centered
+                                p.has-text-white.is-size-2.has-text-success +#{row.amount} ₽
+                                p.has-text-white.is-size-4.has-text-grey-lighter #{row.timeCompleted}
+                                .field
+                                a.button.is-fullwidth.is-success.has-text-white.is-small(href=`https://steamid.xyz/${row.steamID}` target='_blank') #{row.steamID}
+                //- .column.box.is-radiusless
+                //-     h1.title.has-text-white.is-size-5.has-text-centered Топ-донатеры
+                //- .columns.is-multiline
+                    //- each row in rows_lastDonators
+                    //-     .column
+                    //-         .column.box.is-dark.is-radiusless.is-size-5.has-text-centered
+                    //-             p.has-text-white.is-size-2.has-text-success #{row.totalTopup} ₽
+                    //-             p.has-text-white.is-size-7.has-text-grey-lighter потрачено #{row.totalSpent} жетонов
+                    //-             p.has-text-white.is-size-7.has-text-grey-lighter всего #{row.totalPurchases} покупок
+                    //-             .field
+                    //-             a.button.is-fullwidth.is-success.has-text-white.is-small(href=`https://steamid.xyz/${row.steamID}` target='_blank') #{row.steamID}
+                .columns.is-multiline
+                    .column.is-full
+                        .box.dark-bg.is-radiusless.is-size-5.has-text-centered
+                            | Список донатов
+                            br
+                            canvas.is-hidden-desktop#mobileChart(height='1000', data-shop=shopPurchases)
+                            canvas.is-hidden-mobile#desktopChart(height='125', data-shop=shopPurchases)
+
+                .column.box.is-radiusless
+                    h1.title.has-text-white.is-size-5.has-text-centered Статистика сайта
+                .columns.is-multiline
+                    .column
+                        .box.success-bg.is-radiusless.is-size-5.has-text-centered
+                            | Последний пользователь
+                            each lastUser in rows_users
+                                br
+                                a.title.has-text-white.is-size-3(href=`/user/${lastUser.user}`) #{lastUser.user}
+                    each row in rows_galCount
+                        .column
+                            .box.success-bg.is-radiusless.is-size-5.has-text-centered
+                                | Фотографий в галерее
+                                br
+                                a.title.has-text-white(href='/gallery') #{row.total}
+                    .column
+                        .box.success-bg.is-radiusless.is-size-5.has-text-centered
+                            .field
+                                p Гранит и кобальт - #{MetroPlayersCount}/32
+                            .field
+                                progress.progress.is-white.is-large(value=`${MetroPlayers}` max="32")
+
+                .columns.is-multiline
+                    .column
+                        .box.is-radiusless
+                            a.button.is-fullwidth.is-dark(href='/gallery/list')
+                                span.icon
+                                    i.fa.fa-image
+                                span Модерация галереи
+                        .box.is-radiusless
+                            form(action='/add_target' method='POST')
+                                each row in rows_main
+                                    .field
+                                        strong Добавить 
+                                            a(href='/roadmap') цель
+                                    .field
+                                        textarea.textarea(type="text" name="text" maxlength='360' required)
+                                    .field
+                                        .control
+                                            .select
+                                                select(id='colors' name='type' required)
+                                                    option(value="" disabled selected) Тематика
+                                                    option(class="option-1" value='web') Вебсайт
+                                                    option(class="option-2" value='gmod') Garry's Mod
+                                                    option(class="option-3" value='comm') Сообщество
+                                    .field
+                                        .control
+                                            button.is-fullwidth.button(type='submit') Опубликовать
+
+
+                    .column.is-two-fifths
+                        .box.is-radiusless
+                            form(action='/main_notify' method='POST')
+                                each row in rows_main
+                                    .field
+                                        span.icon.is-medium
+                                            i.fas.fa-key
+                                        strong.has-tooltip-multiline(data-tooltip=row.text) Текущий текст
+                                    .field
+                                        textarea.textarea.input-text(type="text" name="text" maxlength='180' required)
+                                    .field
+                                        .control
+                                            .select
+                                                select(id='colors' name='type' required)
+                                                    option(value="" disabled selected) Цвет заднего фона
+                                                    option(class="option-1" value='primary') Сине-зеленый
+                                                    option(class="option-2" value='success') Ярко-зеленый
+                                                    option(class="option-3" value='danger') Красный 
+                                                    option(class="option-4" value='warning') Желтый
+                                                    option(class="option-5" value='info') Синий
+                                                    option(class="option-6" value='void') Градиент
+                                    .field
+                                        .control
+                                            button.colored.is-fullwidth.button(type='submit') Опубликовать
+    
+    style.
+        .primary-bg{ background-color: #26A69A; border-color:  #26A69A }
+        .success-bg{ background-color: #23d160; border-color: #23d160 }
+        .danger-bg{ background-color: #ff3860; border-color: #ff3860 }
+        .warning-bg{ background-color: #ffdd57; border-color: #ffdd57 }
+        .info-bg{ background-color: #3273dc; border-color: #3273dc }
+        .example-bg{ background-color: #404040; border-color: #404040 }
+        .void-bg{ background: linear-gradient(-45deg, #FFA64B, #F87D71); border-color: linear-gradient(-45deg, #FFA64B, #F87D71) }
+
+        .dropdown {
+            width: 100%;
+        }
+
+        .dropdown-trigger {
+            width: 100%
+        }
+
+        #drop {
+            display: block;
+            width: 100%;
+            justify-content: space-between
+        }
+
+    script.
+        var prevVal
+        
+        $("#colors").on("change",function(){
+            var val = $(this).find('option:selected').val()
+            $(".colored").removeClass(`${prevVal}-bg`).removeClass(`example-bg`).addClass(`${val}-bg`)
+            prevVal = val
+        })
+
+        $('.input-text').keyup(function(){
+            var a = $(this).val()
+            $('.colored').text(a) 
+        })
+
+        var desktopChart = document.getElementById('desktopChart')
+        var mobileChart = document.getElementById('mobileChart')
+
+        var shopData = JSON.parse(desktopChart.dataset.shop)
+
+        var dataSubs = []
+        var dataSubsCount = []
+        var dataSubsSum = []
+
+        shopData.forEach(element => {
+            dataSubs.push(element.class)
+            dataSubsCount.push(element.count)
+            dataSubsSum.push(element.count * element.price)
+        })
+
+        const data = {
+            labels: dataSubs,
+            datasets: [
+                {
+                    label: 'Покупки',
+                    data: dataSubsCount,
+                    backgroundColor: [
+                        '#fba64b',
+                        '#f87d71',
+                    ],
+                    borderColor: [
+                        '#fba64b',
+                        '#f87d71',
+                    ],
+                },
+                {
+                    label: 'Доход',
+                    data: dataSubsSum,
+                    backgroundColor: [
+                        '#f87d71',
+                        '#fba64b',
+                    ],
+                    borderColor: [
+                        '#f87d71',
+                        '#fba64b',
+                    ],
+                }
+            ],
+        };
+
+        var isMobile = Math.min(window.screen.width, window.screen.height) < 768 || navigator.userAgent.indexOf("Mobi") > -1;
+
+        Chart.defaults.color = "#FFFFFF";
+
+        var desktopChart = new Chart(desktopChart, {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                },
+            }
+        })
+
+        var mobileChart = new Chart(mobileChart, {
+            type: 'bar',
+            data: data,
+            options: {
+                indexAxis: 'y',
+                elements: {
+                    bar: {
+                        borderWidth: 0,
+                    }
+                },
+                responsive: true,
+                    plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true
+                    }
+                },
+            },
+        })

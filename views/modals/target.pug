@@ -1,0 +1,23 @@
+#target_add.modal
+    .modal-background(onclick="document.getElementById('target_add').classList.remove('is-active')")
+    .modal-card
+        header.modal-card-head
+            p#modal-text.modal-card-title Новая цель
+            button.delete(onclick="document.getElementById('target_add').classList.remove('is-active')")
+
+        section.modal-card-body
+            form(action="/add_target" method="post")
+                .field
+                    textarea.textarea(type="text" name="text" maxlength='360' required)
+                .field
+                    .control
+                        .select
+                            select(id='colors' name='type' required)
+                                option(value="" disabled selected) Тематика
+                                option(class="option-1" value='web') Вебсайт
+                                option(class="option-2" value='gmod') Garry's Mod
+                                option(class="option-3" value='comm') Сообщество
+                .field
+                    .control
+                        button.button.is-fullwidth(type="submit")
+                            p.text-modal Отправить

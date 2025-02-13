@@ -1,0 +1,139 @@
+extends ../_base.pug
+
+block content
+
+    include ../modals/target.pug
+
+    section
+        .column.is-full
+
+    section.section.hero.is-fullheight
+        .hero-head
+            .container
+                .column.box.is-radiusless
+                    .breadcrumb.is-centered
+                        ul
+                            li
+                                span.icon.is-small.has-text-primary
+                                    i.fas.fa-home
+                                a(href=`/main`) Главная
+                            li.is-active
+                                a Цели команды
+
+                .columns.is-centered.is-multiline
+                    .column.is-full
+                        h1.title.has-text-centered.has-text-white Планы на будущее 
+                        h1.subtitle.has-text-centered.has-text-grey-lighter.is-spaced Повестка дня, которой мы следуем
+                        if user
+                            if user.rank == "root"
+                                .has-text-centered
+                                    a.icon.is-small.has-text-success(onclick="document.getElementById('target_add').classList.add('is-active')")
+                                        i.fas.fa-plus.fa-2x
+                .columns
+                    .column.is-one-third
+                        each row in rows_targets
+                            if row.type == "gmod"
+                                .column.is-full
+                                    if row.status == true
+                                        .message-header.has-background-success
+                                        .box.success-completed
+                                            if user
+                                                if user.rank == "root"
+                                                    form(action='/target_remove' method='POST')
+                                                        input.is-hidden(name = "id" value=row.id)
+                                                        button.has-background-transparent.icon.is-small.has-text-success.is-pulled-right
+                                                            i.fas.fa-trash
+                                            span.icon.is-small.has-text-success
+                                                i.fas.fa-dice-d6
+                                            strong.has-text-success  Garry's Mod
+                                            p.has-text-grey-lighter #{row.target}
+                                    else
+                                        .box
+                                            if user
+                                                if user.rank == "root"
+                                                    form(action='/target_status' method='POST')
+                                                        input.is-hidden(name = "id" value=row.id)
+                                                        button.has-background-transparent.icon.is-small.has-text-success.is-pulled-right
+                                                            i.fas.fa-check
+                                            span.icon.is-small.has-text-success
+                                                i.fas.fa-dice-d6
+                                            strong.has-text-success  Garry's Mod
+                                            p #{row.target}
+                    .column.is-one-third
+                        each row in rows_targets
+                            if row.type == "web"
+                                .column.is-full
+                                    if row.status == true
+                                        .message-header.has-background-warning
+                                        .box.warning-completed
+                                            if user
+                                                if user.rank == "root"
+                                                    form(action='/target_remove' method='POST')
+                                                        input.is-hidden(name = "id" value=row.id)
+                                                        button.has-background-transparent.icon.is-small.has-text-warning.is-pulled-right
+                                                            i.fas.fa-trash
+                                            span.icon.is-small.has-text-warning
+                                                i.fas.fa-globe
+                                            strong.has-text-warning  Веб-ресурсы
+                                            p.has-text-grey-lighter #{row.target}
+                                    else
+                                        .box
+                                            if user
+                                                if user.rank == "root"
+                                                    form(action='/target_status' method='POST')
+                                                        input.is-hidden(name = "id" value=row.id)
+                                                        button.has-background-transparent.icon.is-small.has-text-warning.is-pulled-right
+                                                            i.fas.fa-check
+                                            span.icon.is-small.has-text-warning
+                                                i.fas.fa-globe
+                                            strong.has-text-warning  Веб-ресурсы
+                                            p #{row.target}
+                    .column.is-one-third
+                        each row in rows_targets
+                            if row.type == "comm"
+                                .column.is-full
+                                    if row.status == true
+                                        .message-header.has-background-primary
+                                        .box.primary-completed
+                                            if user
+                                                if user.rank == "root"
+                                                    form(action='/target_remove' method='POST')
+                                                        input.is-hidden(name = "id" value=row.id)
+                                                        button.has-background-transparent.icon.is-small.has-text-primary.is-pulled-right
+                                                            i.fas.fa-trash
+                                            span.icon.is-small.has-text-primary
+                                                i.fas.fa-walking
+                                            strong.has-text-primary  Сообщество
+                                            p.has-text-grey-lighter #{row.target}
+                                    else
+                                        .box
+                                            if user
+                                                if user.rank == "root"
+                                                    form(action='/target_status' method='POST')
+                                                        input.is-hidden(name = "id" value=row.id)
+                                                        button.has-background-transparent.icon.is-small.has-text-primary.is-pulled-right
+                                                            i.fas.fa-check
+                                            span.icon.is-small.has-text-primary
+                                                i.fas.fa-walking
+                                            strong.has-text-primary  Сообщество
+                                            p #{row.target}
+
+    style.
+
+        .box.success-completed {
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+            background-color: rgba(59, 194, 120, 0.2);
+        }
+
+        .box.warning-completed {
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+            background-color: rgba(255, 219, 74, 0.2);
+        }
+
+        .box.primary-completed {
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+            background-color: rgba(36, 166, 154, 0.2)!important;
+        }

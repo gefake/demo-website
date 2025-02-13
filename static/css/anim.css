@@ -1,0 +1,42 @@
+/* */
+
+#col-fade {
+    transition: transform 0.5s, opacity 0.5s;
+    opacity: 0;
+    transform: scale(0);
+}
+
+#col-fade.entered {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+/* */
+
+#text-fade {
+    transition: transform 1s, opacity 1s;
+    opacity: 0;
+    transform: scale(0);
+}
+
+#text-fade.entered {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+/* */
+
+#col-blur {
+    transform: translate3d(0, 0, 0);
+    box-shadow: none;
+    transition: background-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    transform: translate3d(0, 0, 0);
+    box-shadow: none;
+    transition: background-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+
+#col-blur:hover {
+    transform: translate3d(0, -5px, 0);
+}

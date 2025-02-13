@@ -1,0 +1,44 @@
+doctype html
+head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible' content='ie=edge')
+    title #{title} | Voidline Community
+    link(rel='stylesheet' href='/static/css/octo-bulma-v05022018.css')
+    link(rel='stylesheet' href='https://unpkg.com/flickity@2.2.1/dist/flickity.min.css')
+    link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous")
+    link(rel='stylesheet' href='/static/css/bulma-timeline.min.css')
+    link(rel='stylesheet' href='https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css')
+    link(rel='stylesheet' href='/static/css/bulma-extensions.min.css')
+    link(rel='stylesheet' href='/static/css/bulma-checkradio.min.css')
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-tooltip@3.0.2/dist/css/bulma-tooltip.min.css")
+    link(rel="icon" href="/static/images/favicon.ico")
+    script(src="https://cdn.jsdelivr.net/npm/bulma-extensions@6.2.7/dist/js/bulma-extensions.min.js")
+    script(src='https://unpkg.com/flickity@2.2.1/dist/flickity.pkgd.min.js')
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
+    script(src="https://vk.com/js/api/openapi.js?162")
+    script(src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js")
+    script(src="https://loktar00.github.io/JQuery-Snowfall/snowfall.jquery.min.js")
+body
+    section.section.hero.is-fullheight
+        .hero-body
+            .container
+                .columns.is-centered
+                    .column.is-half
+                        if error
+                            h1.is-size-4.has-text-centered(class=`has-text-${type}`) #{error}
+                            //- if btext
+                            //- 	p #{btext}
+                        .field
+                            p.is-size-5.has-text-centered.has-text-grey-lighter #{text}
+                        .columns.is-centered
+                            .column.is-one-quarter
+                                .field
+                                    if btext
+                                        a.button.is-fullwidth.is-outlined(class=`is-${type}` href=back) #{btext}
+                                    else
+                                        a.button.is-fullwidth.is-outlined(class=`is-${type}` href=back) Вернуться назад
+script.
+    $(function() {
+        $("body").animate({ opacity: "1.0" })
+    })

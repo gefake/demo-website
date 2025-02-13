@@ -1,0 +1,25 @@
+.dark {
+    background-color: rgb(44, 44, 44) !important;
+}
+
+.text {
+    padding-left: 0.4em;
+}
+
+.priority {
+    border: solid 1px;
+}
+
+.second {
+    border-top: solid 1px;
+    border-bottom: solid 1px;
+    border-right: solid 1px;
+}
+
+#home-left {
+    background-color: #c9baba;
+}
+
+#home-right {
+    background-color: rgb(161, 161, 255);
+}

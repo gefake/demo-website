@@ -1,0 +1,54 @@
+doctype html
+
+head
+  link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css')
+  link(rel='stylesheet' href='/static/css/serverjoin.css')
+  meta(http-equiv='refresh' content=`steam://connect/${data.serverIP}:${data.serverPORT}`)
+
+.section.hero.is-halfheight
+    .hero-body
+        .container
+            .field
+                .block.has-text-centered
+                    .block.has-text-centered
+                        a.button.is-link.has-image-centered(href=`steam://connect/${data.serverIP}:${data.serverPORT}`)
+                            h1.shadow.has-text-centered.title.has-text-white.is-font-nunito.is-size-large #{data.serverIP || "🤔"}:#{data.serverPORT || "🧱"}
+            .field
+                h2.shadow.has-text-centered.subtitle.has-text-dark.is-font-nunito.is-size-large Ты подключаешься к #{data.serverNAME}
+                    p.shadow.has-text-centered.has-text-dark.is-font-nunito.is-size-large Если подключение не произошло, нажми на синюю кнопку выше
+                .field
+                    p.shadow.has-text-centered.has-text-grey.is-font-nunito Чтобы подключаться сразу без подтверждения, нажми галочку в появившемся окошке 
+                .column.is-full.has-image-centered
+                    .block.has-text-centered
+                        figure.image.is-inline-block
+                            img(src='https://i.imgur.com/dNQV1kM.png')
+                p.shadow.has-text-centered.has-text-dark.is-font-nunito
+            .field
+                .boxes
+                    .boxRotating
+                        div
+                        div
+                        div
+                        div
+                    .boxRotating
+                        div
+                        div
+                        div
+                        div
+                    .boxRotating
+                        div
+                        div
+                        div
+                        div
+                    .boxRotating
+                        div
+                        div
+                        div
+                        div
+
+script.
+    const serverData = !{jsStringify(data)}
+    console.log(serverData)
+    window.onload = function() {
+        location.href = `steam://connect/${serverData.serverIP}:${serverData.serverPORT}`
+    }

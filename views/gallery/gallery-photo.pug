@@ -1,0 +1,282 @@
+doctype html
+head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible' content='ie=edge')
+    meta(name="description" content="Мы - простые любители ролевой игры, которые занимаются созданием и разработкой тематических серверов.")
+    meta(name="theme-color" content="#FBA64B")
+    meta(property='og:image' content=curImage)
+    title #{title} | Voidline Community
+    link(rel='stylesheet' href='/static/css/octo-bulma-v05022018.css')
+    link(rel='stylesheet' href='https://unpkg.com/flickity@2.2.1/dist/flickity.min.css')
+    link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous")
+    link(rel='stylesheet' href='/static/css/bulma-timeline.min.css')
+    link(rel='stylesheet' href='https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css')
+    link(rel='stylesheet' href='/static/css/bulma-extensions.min.css')
+    link(rel='stylesheet' href='/static/css/bulma-checkradio.min.css')
+    link(rel='stylesheet' href='/static/css/animate.css')
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-tooltip@3.0.2/dist/css/bulma-tooltip.min.css")
+    link(rel="icon" href="/static/images/favicon.ico")
+    script(src="https://www.google.com/recaptcha/api.js")
+    script(src="https://cdn.jsdelivr.net/npm/bulma-extensions@6.2.7/dist/js/bulma-extensions.min.js")
+    script(src='https://unpkg.com/flickity@2.2.1/dist/flickity.pkgd.min.js')
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
+    script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
+    script(src="https://vk.com/js/api/openapi.js?162")
+    script(src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js")
+body
+    section.section.hero.is-fullheight
+        .hero-head
+            .container.is-fluid
+                .column.is-full.is-hidden-mobile.is-hidden-tablet-only
+                .columns.is-centered.is-variable.is-multiline
+                    .column.is-three-quarters.is-radiusless
+                        figure.image
+                            img(src=`${row.image}`)
+                    .column.is-radiusless.box.main.is-hidden-mobile.is-hidden-tablet-only
+                        .box.is-radiusless.is-scrollable
+                            .box.top.is-radiusless
+                                .field
+                                    if user
+                                        if bool == false
+                                            button.is-pulled-right.button.likeButton.animated.is-dark
+                                                i.likeIcon.far.fa-heart
+                                                span.like__number #{likes}
+                                        else
+                                            button.is-pulled-right.button.likeButton.animated.is-void.liked
+                                                i.likeIcon.fa.fa-heart
+                                                span.like__number #{likes}
+                                    else
+                                        button.is-pulled-right.button.likeButton.animated.is-dark(disabled)
+                                            i.likeIcon.fa.fa-heart
+                                            span.like__number #{likes}
+                                    h1#desc.has-text-white.is-size-5 #{row.title}
+                                    a.has-text-grey-light.is-size-7(href=`/user/${row.user}`) #{row.user} • #{nowStamp}
+                                .field
+                                    p.has-text-grey-lighter.is-size-6   #{row.description}
+                                if user && user.rank=='root'
+                                    .field
+                                    form(action=`/gallery/image-${iID}/hide` method="post")
+                                        button.is-pulled-right.button.is-small.is-rounded(type="submit")
+                                            span.icon
+                                                i.far.fa-trash-alt
+                                            span Удалить
+                                    form(action=`/gallery/image-${iID}/hide` method="post")
+                                        button.button.is-small.is-rounded(type="submit")
+                                            span.icon
+                                                i.far.fa-eye-slash
+                                            span Скрыть
+                                if user && user.rank=='admin'
+                                    form(action=`/gallery/image-${iID}/hide` method="post")
+                                        button.button.is-small.is-rounded(type="submit")
+                                            span.icon
+                                                i.far.fa-eye-slash
+                                            span Скрыть
+                            article.message.is-dark.is-size-6
+                                .field
+                                each row in rows_comments
+                                    if row.text
+                                        .box.top
+                                            article.media.main
+                                                //- .media-left
+                                                //-     if row.user==0
+                                                //-         figure.image.is-squared.is-64x64
+                                                //-             a(href=`/user/${row.avatar}`)
+                                                //-                 img.is-rounded(src=`/static/uploads/avatars/user.png`)
+                                                //-     else
+                                                //-         figure.image.is-square.is-64x64
+                                                //-             a(href=`/user/${row.user}`)
+                                                //-                 img.is-rounded(src=`/static/uploads/avatars/${row.user}.png` href=`/user/${row.user}`)
+                                                .media-content
+                                                    .content
+                                                        strong
+                                                            a.has-text-grey-lighter(href=`/user/${row.user}`) #{row.user} 
+                                                        span.is-size-7.has-text-grey 
+                                                            br
+                                                        span.has-text-grey-lighter #{row.text}
+                                                form(action=`/gallery/image-${iID}/delcomment` method="post")
+                                                    if user
+                                                        if user.rank=="root"
+                                                            input(value=row.id hidden name='id')
+                                                            button(type='submit').delete
+                            if user
+                                form(action=`/gallery/image-${row.link}/comment` method="post")
+                                    .field
+                                        select(name="id" hidden="true")
+                                            option(selected) #{row.id}
+                                    .field
+                                        textarea.textarea.is-radiusless(type='text' maxlength="200" placeholder='Введи сообщение...' name='text' required)
+                                    .field
+                                        button.button.is-fullwidth.is-dark(type="submit")
+                                            span.icon
+                                                i.fa.fa-comments
+                                            span Комментировать
+                    .column.is-radiusless.box.main.is-hidden-desktop
+                        .box.is-radiusless
+                            .field
+                                if user
+                                    if bool == false
+                                        button.is-pulled-right.button.likeButton.animated.is-dark
+                                            i.likeIcon.fa.fa-heart
+                                            span.like__number #{likes}
+                                    else
+                                        button.is-pulled-right.button.likeButton.animated.liked
+                                            i.likeIcon.fa.fa-heart
+                                            span.like__number #{likes}
+                                else
+                                    button.is-pulled-right.button.likeButton.animated.is-dark(disabled)
+                                        i.likeIcon.fa.fa-heart
+                                        span.like__number #{likes}
+                                a.has-text-grey-light.is-size-7(href=`/user/${row.user}`) #{row.user} • #{nowStamp}
+                            .field
+                                p.has-text-grey-lighter.is-size-6   #{row.description}
+                            if user && user.rank=='root'
+                                .field
+                                form(action=`/gallery/image-${iID}/hide` method="post")
+                                    button.is-pulled-right.button.is-small.is-rounded(type="submit")
+                                        span.icon
+                                            i.far.fa-trash-alt
+                                        span Удалить
+                                form(action=`/gallery/image-${iID}/hide` method="post")
+                                    button.button.is-small.is-rounded(type="submit")
+                                        span.icon
+                                            i.far.fa-eye-slash
+                                        span Скрыть
+                            if user && user.rank=='admin'
+                                form(action=`/gallery/image-${iID}/hide` method="post")
+                                    button.button.is-small.is-rounded(type="submit")
+                                        span.icon
+                                            i.far.fa-eye-slash
+                                        span Скрыть
+                        .field
+                        each row in rows_comments
+                            if row.text
+                                .box.mobile-comments
+                                    article.media.main
+                                        //- .media-left
+                                        //-     if row.avatar!=0
+                                        //-         figure.image.is-square.is-64x64
+                                        //-             a(href=`/user/${row.user}`)
+                                        //-                 img.is-rounded(src=`/static/uploads/avatars/${row.user}.png` href=`/user/${row.user}`)
+                                        //-     else
+                                        //-         figure.image.is-squared.is-64x64
+                                        //-             a(href=`/user/${row.user}`)
+                                        //-                 img.is-rounded(src=`/static/uploads/avatars/user.png`)
+                                        .media-content
+                                            .content
+                                                strong
+                                                    a.has-text-grey-lighter(href=`/user/${row.user}`) #{row.user}
+                                                span.is-size-7.has-text-grey 
+                                                    br
+                                                span.has-text-grey-lighter #{row.text}
+                                        form(action=`/gallery/image-${iID}/delcomment` method="post")
+                                            if user
+                                                if user.rank=="root"
+                                                    input(value=row.id hidden name='id')
+                                                    button(type='submit').delete
+                        if user
+                            form(action=`/gallery/image-${row.link}/comment` method="post")
+                                .field
+                                    select(name="id" hidden="true")
+                                        option(selected) #{row.id}
+                                .field
+                                    textarea.textarea.is-radiusless(type='text' maxlength="200" placeholder='Введи сообщение...' name='text' required)
+                                .field
+                                    button.button.is-fullwidth.is-dark(type="submit")
+                                        span.icon
+                                            i.fa.fa-comments
+                                        span Комментировать
+
+            a.button.modal-close.is-large(href='/gallery')
+
+            script.
+                iID = "#{iID}"
+                $(function() {
+                    $("body").animate({ opacity: "1.0" })
+                })
+
+                $(document).ready(function(){
+                    $('.likeButton').click(function(){
+                        $.ajax({
+                            type:"POST",
+                            url:`image-${iID}/like`
+                        })
+                    })
+                })
+
+                $('.likeButton').on('click', function(){
+                    if (!$(this).hasClass('liked')) {
+                        updated_likes = parseInt($('.likeButton span').html()) + 1
+                        $('.likeButton span').html(updated_likes)
+                        $(this).removeClass('is-dark').addClass('liked').addClass("is-void")
+                        $('.likeIcon').removeClass('far').addClass('fa')
+                    } else {
+                        updated_likes = parseInt($('.likeButton span').html()) - 1
+                        $('.likeButton span').html(updated_likes)
+                        $(this).addClass('is-dark').removeClass('liked').removeClass("is-void")
+                        $('.likeIcon').addClass('far').removeClass('fa')
+                    }
+                })
+
+            style.
+                .likeButton {
+                    border: none;
+                    color: white;
+                    cursor: pointer;
+                    border-radius: 0.4rem;
+                    transition: all ease 0.3s;
+                    display: flex;
+                    align-items: center;
+                }
+
+                .likeButton:hover {
+                    background-color: rgba(#fba64b, 0.8);
+                }
+
+                .likeButton[disabled] {
+                    cursor: pointer;
+                }
+
+                .likeButton.liked {
+                    cursor: pointer;
+                }
+
+                .likeIcon {
+                    font-size: 1.2rem;
+                    margin-right: 0.5rem;
+                }
+
+                .like__number {
+                    font-size: 1rem;
+                }
+
+                a {
+                    text-decoration:none
+                }
+
+                article {
+                    background-color: red
+                }
+
+                .is-scrollable {
+                    position: relative;
+                    height: 81vh;
+                    width: auto;
+                    overflow: auto;
+                }
+
+                .top {
+                    background-color: rgb(45,45,45);
+                }
+
+                .main {
+                    background-color: transparent;
+                    box-shadow: 0 2px 3px rgba(10, 10, 10, 0), 0 0 0 1px rgba(10, 10, 10, 0);
+                }
+
+                @media screen and (min-width: 1408px) {
+                    .container {
+                        max-width: 1588px;
+                        width: 1588px
+                    }
+                }

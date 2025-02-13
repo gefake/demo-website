@@ -1,0 +1,189 @@
+nav.navbar.is-fixed-top.shadow-drop-center.scrolled.enter-trigger
+    .navbar-brand
+        a.navbar-item(href="/main")
+            img(src='https://i.imgur.com/sN9vE2d.png')
+        #burger.navbar-burger(onclick="document.querySelector('#navMenu').classList.toggle('is-active');this.classList.toggle('is-active');")
+            span
+            span
+            span
+    #navMenu.navbar-menu
+        .navbar-start
+            .navbar-item.has-dropdown.is-hoverable
+                a.navbar-link.is-unselectable.is-hidden-desktop Главное
+                    a.navbar-item.is-hidden-desktop(href="/gallery")
+                        span.icon.is-medium
+                            i.fas.fa-images
+                        span Галерея
+                    a.navbar-item.is-hidden-desktop(href="/roadmap")
+                        span.icon.is-medium
+                            i.fas.fa-map-signs
+                        span Планы и цели
+                    a.navbar-item.is-hidden-desktop(href="https://vk.com/voidline" target="_blank") 
+                        span.icon.is-medium
+                            i.fab.fa-vk
+                        span ВКонтакте
+                    a.navbar-item.is-hidden-desktop(href="/discord")
+                        span.icon.is-medium
+                            i.fab.fa-discord
+                        span Дискорд
+                    a.navbar-item.is-hidden-desktop(href="https://steamcommunity.com/groups/voidline-community")
+                        span.icon.is-medium
+                            i.fab.fa-steam
+                        span Steam
+                    a.navbar-item.is-hidden-desktop(href="https://forum.voidline.rocks")
+                        span.icon.is-medium
+                            i.fas.fa-comment
+                        span Форум
+                    a.navbar-item.is-hidden-desktop(href="https://voidline.rocks/help")
+                        span.icon.is-medium
+                            i.fas.fa-question-circle
+                        span Центр поддержки
+                    a.navbar-item.is-hidden-desktop(href='https://paypal.me/voidline')
+                        span.icon.is-medium
+                            i.fas.fa-heart
+                        span Поддержать
+            if user
+                if user.rank=='admin' || user.rank=='root' || user.rank=='moder'
+                    .navbar-item.has-dropdown.is-hoverable.is-hidden-desktop
+                        a.navbar-link.is-unselectable.is-hidden-desktop Администрирование
+                        a.navbar-item(href="/donations_evac")
+                            span.icon.is-medium
+                                i.fas.fa-lock
+                            span Статистика донатов EVAC
+                        a.navbar-item(href="/admin")
+                            span.icon.is-medium
+                                i.fas.fa-lock
+                            span Панель управления
+                        a.navbar-item(href='/gallery/list') 
+                            span.icon.is-medium
+                                i.fas.fa-image
+                            span Модерация галереи
+            .navbar-item.has-dropdown.is-hoverable.is-hidden-desktop
+                a.navbar-link.is-hidden-mobile.is-hidden-tablet-only
+                    span.icon
+                    span.fa-stack.fa-lg
+                        i.fas.fa-bars.fa-stack-1x
+                a.navbar-link.is-unselectable Авторизация
+                    if !user
+                        a.navbar-item(href="/user/login")
+                            span.icon.is-medium
+                                i.fas.fa-sign-in-alt
+                            span Войти
+                        a.navbar-item(href="/user/reg") 
+                            span.icon.is-medium
+                                i.fas.fa-user-plus
+                            span Регистрация
+                    else
+                        a.navbar-item(href="/user/login")
+                            span.icon.is-medium
+                                i.fas.fa-user-circle
+                            span #{user.name}
+                        form#exit(action='/user/exit' method='POST')
+                            a.navbar-item(type='submit' onclick="document.getElementById('exit').submit();") 
+                                span.icon.is-medium
+                                    i.fas.fa-sign-out-alt
+                                span Выйти
+
+            a.navbar-link.has-tooltip-bottom.is-hidden-mobile.is-hidden-tablet-only(href="https://vk.com/voidline" data-tooltip="Группа ВКонтакте")
+                span.icon
+                span.fa-stack.fa-lg
+                    i.fab.fa-vk
+            a.navbar-link.has-tooltip-bottom.is-hidden-mobile.is-hidden-tablet-only(href='/discord' data-tooltip="Наш сервер в Дискорде")
+                span.icon
+                span.fa-stack.fa-lg
+                    i.fab.fa-discord
+            a.navbar-item.has-tooltip-bottom.is-hidden-mobile.is-hidden-tablet-only(href="https://steamcommunity.com/groups/voidline-community" data-tooltip="Группа в Steam")
+                span.icon
+                    i.fab.fa-steam.fa-lg
+            a.navbar-item.has-tooltip-bottom.is-hidden-mobile.is-hidden-tablet-only.has-tooltip-multiline(href="/gallery" data-tooltip="Галерея. Всё самое интересное из жизни сообщества")
+                span.icon
+                    i.fa.fa-image.fa-lg
+            //- a.navbar-item.has-tooltip-bottom.is-hidden-mobile.is-hidden-tablet-only.has-tooltip-multiline(href="/roadmap" data-tooltip="Планы и цели, которым мы следуем")
+            //-     span.icon
+            //-         i.fa.fa-map-signs.fa-lg
+            a.navbar-link.has-tooltip-bottom.is-hidden-mobile.is-hidden-tablet-only(href='https://forum.voidline.rocks' target='_blank' data-tooltip="Наш форум")
+                span.icon
+                span.fa.fa-lg
+                    i.fas.fa-comment
+            a.navbar-link.has-tooltip-bottom.is-hidden-mobile.is-hidden-tablet-only(href='https://voidline.rocks/help' target='_blank' data-tooltip="Центр поддержки")
+                span.icon
+                span.fa.fa-lg
+                    i.fas.fa-question-circle
+            .navbar-item.has-dropdown.is-hoverable.is-hidden-mobile.is-hidden-tablet-only
+                a.navbar-link
+                    span.icon
+                    span.fa-stack.fa-lg
+                        i.fas.fa-heart.fa-stack-1x
+                .navbar-dropdown.is-boxed.is-left
+                    a(href='https://gm-donate.ru/donate/10217' target='_blank').navbar-item
+                        span.icon
+                            i.fas.fa-subway
+                        span Жетоны Метро
+                    a(href='https://boosty.to/voidline' target='_blank').navbar-item
+                        span.icon
+                            i.fas.fa-solid.fa-bolt
+                        span Boosty
+            if user
+                if user.rank=='admin' || user.rank=='root' || user.rank=='moder'
+                    .navbar-item.has-dropdown.is-hoverable.is-hidden-mobile.is-hidden-tablet-only
+                        a.navbar-link
+                            span.icon
+                            span.fa-stack.fa-lg
+                                i.fas.fa-lock.fa-stack-1x
+                        .navbar-dropdown.is-boxed.is-left
+                            a(href='/donations_evac').navbar-item
+                                span Статистика донатов EVAC
+                            a(href='/admin').navbar-item
+                                span Панель управления
+                            a(href='/gallery/list').navbar-item
+                                span Модерация галереи
+
+        .navbar-end
+            .navbar-item.field
+                p.control 
+                if user
+                    .field.is-grouped.is-hidden-mobile.is-hidden-tablet-only
+                        .control
+                            a#full-left.button.is-dark.is-radiusless.is-fullwidth(href=`/user/${user.name}`)
+                                span #{user.name}
+                        form(action='/user/exit' method='POST')
+                            button.has-background-transparent#full-right.button.is-radiusless.is-fullwidth(type='submit')
+                                span Выйти
+                else
+                    .field.is-grouped.is-hidden-mobile.is-hidden-tablet-only
+                        .control
+                            a#full-left.button.is-dark.is-radiusless.is-fullwidth(href='/user/login')
+                                    span.is-size-8 ВОЙТИ
+                        a#full-right.button.is-void.is-radiusless.is-fullwidth(href='/user/reg')
+                            span.is-size-8 РЕГИСТРАЦИЯ
+
+    style.
+
+        .texted {
+            padding: .1rem 0.7rem;
+        }
+
+        .image.is-square {
+            padding-top: 0%
+        }
+
+        .padding-left {
+            padding-left: 5px;
+        }
+
+        .navbar-link {
+            width: 30px;
+        }
+
+        #full-left {
+            background-color: transparent;
+            height: 55px;
+            margin: -0.45em;
+            margin-right: 1em;
+        }
+
+        #full-right {
+            height: 55px;
+            margin: -0.45em;
+            margin-right: -1em;
+        }

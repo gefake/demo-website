@@ -1,0 +1,102 @@
+extends ../_base.pug
+
+block content
+
+    include ../modals/screenshot.pug
+
+    section
+        .column.is-full
+
+    section.section.hero.is-fullheight
+        .hero-head
+            .container
+                .column.box.is-radiusless
+                    .breadcrumb.is-centered
+                        ul
+                            li
+                                span.icon.is-small.has-text-primary
+                                    i.fas.fa-home
+                                a(href=`/main`) Главная 
+                            li.is-active
+                                a Галерея
+                .columns.is-multiline
+                    each img, iID in rows || []
+                        if img.status==true
+                            .column.is-one-third
+                                figure.image.overlay
+                                    a.overlay-text(href=`/gallery/image-${img.link}`)
+                                        img(src=`${img.image}` alt=img.title)
+                                    a.overlay.tagged.is-large.is-overlay(href=`/gallery/image-${img.link}`)
+                                        p.overlay-text.has-text-white.is-size-6 #{img.title}
+                                        p.overlay-text.has-text-grey-light.is-size-7(href=`/user/${img.user}`) фотография от #{img.user}
+                if user
+                    if user.rank!="guest"
+                        .column.is-full.box.is-radiusless
+                            if user.rank=="user"
+                                .buttons
+                                    a.button.is-dark(onclick="document.getElementById('screenshot-publicate').classList.add('is-active')")
+                                        span.icon.is-small
+                                            i.fas.fa-plus
+                                        span Добавить фото
+                                    //- a.button.is-dark(href='/gallery/rules')
+                                    //-     span.icon.is-small
+                                    //-         i.fas.fa-file
+                                    //-     span Правила публикации
+                            if user.rank=='admin' || user.rank=='root'
+                                .buttons
+                                    a.button.is-dark(href='/gallery/list')
+                                        span.icon.is-small
+                                            i.fas.fa-lock
+                                        span Модерация
+                                    //- a.button.is-dark(href='/gallery/rules')
+                                    //-     span.icon.is-small
+                                    //-         i.fas.fa-file
+                                    //-     span Правила публикации
+                                    a.button.is-dark.is-pulled-right(onclick="document.getElementById('screenshot-publicate').classList.add('is-active')")
+                                        span.icon.is-small
+                                            i.fas.fa-plus
+                                        span Добавить фото
+
+    style.
+
+        figure.image:hover {
+            transform: scale(1.05); 
+            z-index: 999;
+        }
+
+        figure.image {
+            background-color: #FBA64B;
+        }
+
+        img {
+            max-height: 250px;
+        }
+
+        .overlay {
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            opacity: 1;
+            transition: .2s ease;
+            background-color: #26A69A;
+        }
+
+        .overlay-text {
+            opacity: 0;
+            transition: .2s ease;
+        }
+
+        .tagged {
+            padding-left: 0.5em;
+            padding-top: 0.2em;
+            background-color: rgba(51,3,0,0);
+            height: 50px;
+        }
+
+        .overlay:hover .tagged  {
+            background-color: rgba(51,51,51,0.8);
+        }
+
+        .overlay:hover .overlay-text {
+            opacity: 1
+        }

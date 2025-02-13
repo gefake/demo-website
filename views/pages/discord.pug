@@ -1,0 +1,52 @@
+extends ../_base.pug
+
+block content
+
+    section.section.hero.is-fullheight
+        .hero-head
+            .container
+                .column.is-full
+                .column.box.is-radiusless
+                    .breadcrumb.is-centered
+                        ul
+                            li
+                                span.icon.is-small.has-text-primary
+                                    i.fas.fa-home
+                                a(href=`/main`) Главная 
+                            li.is-active
+                                a Дискорд
+                .columns
+                    .column.is-hidden-mobile.is-hidden-tablet-only
+                        iframe(src="https://discordapp.com/widget?id=634833167424946188" width="350" height="700" allowtransparency="true" frameborder="0")
+                    .column.is-three-quarters
+                        //- .notification.is-primary Перед подключением к Discord-серверу ознакомься с нашими правилами присутствия на нём.
+                        a.button.is-void.is-large.is-fullwidth.has-tooltip-top.is-hidden-tablet(data-tooltip="Не забудь ознакомиться с правилами!" href='https://discord.gg/cY2w7px' target='_blank') Подключиться
+                        a.button.is-void.is-medium.is-fullwidth.has-tooltip-top.is-hidden-mobile.is-hidden-tablet-only(data-tooltip="Не забудь ознакомиться с правилами!" href='https://discord.gg/cY2w7px' target='_blank') Подключиться
+                        .field
+                        .box.is-radiusless
+                            h1.subtitle.has-text-white.is-size-4.has-text-centered.title Правила сервера
+                            p.has-text-success.is-size-5 Общие положения
+                            p.has-text-grey-lighter 1. Участники Дискорд-сервера равны перед правилами вне зависимости от роли.
+                            p.has-text-grey-lighter 2. Мат разрешается, но без злоупотребления.
+                            p.has-text-grey-lighter 3. Запрещена расовая дискриминация, булинг, оскорбления по национальному признаку и любой другой вид оскорблений.
+                            p.has-text-grey-lighter 4. Не допускается применение экстремистской символики и символики запрещенных организаций, призыв к насилию и терроризму.
+                            p.has-text-grey-lighter 5. Нельзя использовать NSFW-контент: шок-контент, порнографию и любой другой контент, подходящий под определение NSFW.
+                            p.has-text-grey-lighter 6. Запрещены все типы флуда, спама и капса.
+                            .field
+                            p.has-text-success.is-size-5 Размещение ссылок
+                            p.has-text-grey-lighter 1. Запрещается реклама без согласования с администратором Дискорд-сервера.
+                            p.has-text-grey-lighter 2. Не допускается спам-рассылка в ЛС участникам Дискорд-сервера.
+                            p.has-text-grey-lighter 3. В любом канале запрещена публикация ссылок на донат-сайты, площадки приема платежей, спонсорской помощи, пожертвований и других сервисов.
+                            .field
+                            p.has-text-success.is-size-5 Никнеймы и аватарки
+                            p.has-text-grey-lighter 1. Администратор вправе требовать изменение никнейма и аватарки, если считает, что они оскорбляют кого-либо.
+                            p.has-text-grey-lighter 2. Запрещены никнеймы типа User, Discord User, Nickname и прочие, в том числе Admin, Moderator и прочие никнеймы, способные ввести в замешательство участника Дискорд-сервера.
+                            p.has-text-grey-lighter 3. Запрещено использование никнеймов с матом, оскорблением, рекламой сторонних проектов.
+                            .field
+                            p.has-text-success.is-size-5 Ответственность
+                            p.has-text-grey-lighter 1. При нарушении правил Дискорд-сервера принимаются меры к пользователям вплоть до ограничения доступа.
+                            p.has-text-grey-lighter 2. Обход бана путем входа под другим идентификатором или иными путями — бан.
+                            p.has-text-grey-lighter 3. Администратор Дискорд-сервера вправе отказать в доступе любому участнику. Он не обязан указывать причины или предупреждать об этом.
+                            p.has-text-grey-lighter 4. Нарушение упомянутых выше норм и правил — бан.
+                            p.has-text-grey-lighter 5. Неуважительное отношение к другим пользователям — бан.
+                            p.has-text-grey-lighter 6. Разжигание межнациональной розни, конфликтов на политическом и религиозном основании — бан.
